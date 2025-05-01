@@ -8,8 +8,8 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private Rigidbody2D slowCamera;
     private float offsetX;
     private float offsetY;
-    private float MaxX;
-    private float MaxY;
+    private Vector3 maxVector;
+    private Vector3 direction;
     private bool isEndLine = false; 
 
     // Start is called before the first frame update
@@ -28,24 +28,37 @@ public class CameraManager : MonoBehaviour
         if (target == null)
             return;
 
+        if (isEndLine == true)
+        {
+            return;
+		}
+
 		//Vector3 pos = transform.position;
 
   //      pos.x = target.position.x + offsetX; //대상 위치 + 본인 위치
   //      pos.y = target.position.y + offsetY;
         Vector2 direction = (target.position - transform.position);
-        slowCamera.velocity = direction * 0.85f;
-		//slowCamera.velocity = Vector3.Lerp(pos, gameObject.transform.position, Time.deltaTime * 2f); 
+        slowCamera.velocity = Vector3.Lerp(direction, target.position, Time.deltaTime * 2f); //부드럽게 이동
+																										   //slowCamera.velocity = direction * 1.5f;
+																										   //slowCamera.velocity = Vector3.Lerp(pos, gameObject.transform.position, Time.deltaTime * 2f); 
 	}
 
-	public void OnTriggerEnter2D(Collider2D collision)
-	{
-        MaxX = transform.position.x;
-        MaxY = transform.position.y;
-		//isEndLine = true;
-	}
+	//public void OnTriggerEnter2D(Collider2D collision)
+	//{
+    //       if(collision.gameObject.CompareTag("wall"))
+	//	{
+	//		isEndLine = true;
+    //           slowCamera.velocity = transform.position - transform.position;
+	//		return;
+	//	}
+	//}
 
-	public void OnTriggerExit2D(Collider2D collision)
-	{
-        //isEndLine = false;
-	}
+	//public void OnTriggerExit2D(Collider2D collision)
+	//{
+	//	if (collision.gameObject.CompareTag("wall"))
+	//	{
+	//		isEndLine = false;
+	//		return;
+	//	}
+	//}
 }
