@@ -18,8 +18,8 @@ public class CameraManager : MonoBehaviour
         if (target == null)
             return;
 
-        //offsetX = transform.position.x - target.position.x; //트랜지션 본인 /대상만큼의 거리를 잰다.
-        //offsetY = transform.position.y - target.position.y; //트랜지션 본인
+        offsetX = transform.position.x - target.position.x; //트랜지션 본인 /대상만큼의 거리를 잰다.
+        offsetY = transform.position.y - target.position.y; //트랜지션 본인
     }
 
     // Update is called once per frame
@@ -33,32 +33,34 @@ public class CameraManager : MonoBehaviour
             return;
 		}
 
-		//Vector3 pos = transform.position;
+        Vector3 pos = transform.position;
 
-  //      pos.x = target.position.x + offsetX; //대상 위치 + 본인 위치
-  //      pos.y = target.position.y + offsetY;
-        Vector2 direction = (target.position - transform.position);
-        slowCamera.velocity = Vector3.Lerp(direction, target.position, Time.deltaTime * 2f); //부드럽게 이동
-																										   //slowCamera.velocity = direction * 1.5f;
-																										   //slowCamera.velocity = Vector3.Lerp(pos, gameObject.transform.position, Time.deltaTime * 2f); 
-	}
+		pos.x = target.position.x + offsetX; //대상 위치 + 본인 위치
+        pos.y = target.position.y + offsetY;
+        transform.position = pos;
+        //Vector2 direction = (target.position - transform.position);
+        //slowCamera.velocity = Vector3.Lerp(direction, target.position, Time.deltaTime * 2f); //부드럽게 이동
+        //slowCamera.velocity = direction * 1.5f;
+        //slowCamera.velocity = Vector3.Lerp(pos, gameObject.transform.position, Time.deltaTime * 2f); 
+    }
 
-	//public void OnTriggerEnter2D(Collider2D collision)
-	//{
-    //       if(collision.gameObject.CompareTag("wall"))
-	//	{
-	//		isEndLine = true;
-    //           slowCamera.velocity = transform.position - transform.position;
-	//		return;
-	//	}
-	//}
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("wall"))
+        {
+            
+            isEndLine = true;
+            //slowCamera.velocity = transform.position - transform.position;
+            return;
+        }
+    }
 
-	//public void OnTriggerExit2D(Collider2D collision)
-	//{
-	//	if (collision.gameObject.CompareTag("wall"))
-	//	{
-	//		isEndLine = false;
-	//		return;
-	//	}
-	//}
+    //public void OnTriggerExit2D(Collider2D collision)
+    //{
+    //	if (collision.gameObject.CompareTag("wall"))
+    //	{
+    //		isEndLine = false;
+    //		return;
+    //	}
+    //}
 }
