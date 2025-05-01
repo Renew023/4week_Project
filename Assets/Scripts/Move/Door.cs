@@ -45,10 +45,35 @@ public class Door : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		around();
-    }
+		if (Input.GetKeyDown(KeyCode.R))
+		{
+			if(isActive)
+			DoorController();
+		}
+	}
 
-    void around()
+	public void OnTriggerEnter2D(Collider2D collision)
+	{
+		if (collision.gameObject.CompareTag("Player"))
+		{
+			explain.SetActive(true);
+			isActive = true;
+		}
+	}
+
+	public void OnTriggerExit2D(Collider2D collision)
+	{
+		if (collision.gameObject.CompareTag("Player"))
+		{
+			explain.SetActive(false);
+			isActive = false;
+		}
+	}
+	// 주변에 플레이어가 있는지 확인
+
+
+
+void around()
     {
 		Vector2 origin = transform.position;// 문
 		Vector2 direction = (target.position - transform.position).normalized; //플레이어
