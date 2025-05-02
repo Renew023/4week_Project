@@ -10,7 +10,7 @@ public enum UIState
     GameOver
 }
 
-public class MiniGameManager : MonoBehaviour
+public class MGUIManager : MonoBehaviour
 {
     HomeUI homeUI;
     GameUI gameUI;

@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraManager : MonoBehaviour
 {
     [SerializeField] private Transform target;
-    [SerializeField] private Rigidbody2D slowCamera;
+    //[SerializeField] private Rigidbody2D slowCamera;
     private float offsetX;
     private float offsetY;
     private Vector3 maxVector;

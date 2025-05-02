@@ -8,7 +8,7 @@ public class GameOverUI : BaseUI
     [SerializeField] private Button restartButton;
     [SerializeField] private Button exitButton;
 
-    public override void Init(MiniGameManager minigame)
+    public override void Init(MGUIManager minigame)
     {
         base.Init(minigame);
 
