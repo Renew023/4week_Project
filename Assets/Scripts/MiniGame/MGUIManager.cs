@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum UIState
+public enum MGUIState
 {
-    None,
     Home,
     Game,
     GameOver
@@ -12,44 +11,69 @@ public enum UIState
 
 public class MGUIManager : MonoBehaviour
 {
-    HomeUI homeUI;
-    GameUI gameUI;
-    GameOverUI gameOverUI;
+    public static MGUIManager instance;
 
-    private UIState currentState;
+    public static MGUIManager Instance
+	{
+		get
+		{
+			if (instance == null)
+			{
+				instance = FindObjectOfType<MGUIManager>();
+			}
+			return instance;
+		}
+	}
 
-    private void Awake()
+	[SerializeField] private MGHomeUI mgHomeUI;
+	[SerializeField] private MGGameUI mgGameUI;
+	[SerializeField] private MGGameOverUI mgGameOverUI;
+
+    public MGUIState currentState;
+
+    [SerializeField] MiniGamePlayerMove mgPlayer;
+
+	private void Awake()
     {
-        homeUI = GetComponentInChildren<HomeUI>();
-        homeUI.Init(this);
-        gameUI = GetComponentInChildren<GameUI>();
-        gameUI.Init(this);
-        gameOverUI = GetComponentInChildren<GameOverUI>();
-        gameOverUI.Init(this);
+		if (instance == null)
+		{
+			instance = this;
+		}
 
-        ChangeState(UIState.None);
+		mgHomeUI.Init(this);
+        mgGameUI.Init(this);
+        mgGameOverUI.Init(this);
+
+        ChangeState(MGUIState.Home);
     }
 
-    public void SetPlayGame()
-    {
-        ChangeState(UIState.Game);
-    }
-
-    public void SetGameOver()
-    {
-        ChangeState(UIState.GameOver);
-    }
-
-    public void ChangeWave(int waveIndex)
-    {
-        //gameUI.UpdateWaveText(waveIndex);
-    }
-
-    public void ChangeState(UIState state)
+    public void ChangeState(MGUIState state)
     {
         currentState = state;
-        homeUI.SetActive(currentState);
-        gameUI.SetActive(currentState);
-        gameOverUI.SetActive(currentState);
+        mgHomeUI.SetActive(currentState);
+        mgGameUI.SetActive(currentState);
+        mgGameOverUI.SetActive(currentState);
     }
+
+    public void OnClickStart()
+    {
+        ChangeState(MGUIState.Game);
+        mgPlayer.ReStart();
+	}
+
+    public void OnClickExit()
+    {
+        
+	}
+
+    public void UpdateScore(int score)
+    {
+        mgGameUI.SetUI(score);
+    }
+
+    public void EndScore(int curScore, int highScore)
+    {
+		ChangeState(MGUIState.GameOver);
+        mgGameOverUI.SetUI(curScore, highScore);
+	}
 }

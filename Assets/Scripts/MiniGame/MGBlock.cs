@@ -6,17 +6,17 @@ public class MGBlock : MonoBehaviour
 {
     [SerializeField] private Transform top;
 	[SerializeField] private Transform bottom;
-    MGGameManager gameManager;
+    MGUIManager uiManager;
 
-    private float minSize = 2f;
-    private float maxSize = 3f;
+    private float minSize = 1f;
+    private float maxSize = 2f;
 
-    private float minDistance = 3f;
-    private float maxDistance = 4f;
+    private float minDistance = 5f;
+    private float maxDistance = 8f;
 	// Start is called before the first frame update
 	void Awake()
     {
-        gameManager = MGGameManager.instance;
+        uiManager = MGUIManager.instance;
     }
 
     // Update is called once per frame
@@ -35,7 +35,7 @@ public class MGBlock : MonoBehaviour
 
         float distance = Random.Range(minDistance, maxDistance);
         Vector3 placePosition = lastPosition + new Vector3(distance, 0);
-        placePosition.y = Random.Range(-2f, 2f);
+        placePosition.y = Random.Range(-1f, 1f);
 
         transform.position = placePosition;
 
@@ -43,11 +43,12 @@ public class MGBlock : MonoBehaviour
 		return placePosition;
 	}
 
-    public void OnTriggerExit2D(Collider2D collision)
+	public void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            gameManager.curScore++;
+            MGGameManager.instance.UpdataScore();
+            //MGGameManager.instance.UpdataScore();
         }
     }
 }

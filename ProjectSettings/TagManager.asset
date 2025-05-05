@@ -9,6 +9,7 @@ TagManager:
   - wall
   - BackGround
   - Block
+  - Parent
   layers:
   - Default
   - TransparentFX

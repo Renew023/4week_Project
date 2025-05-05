@@ -5,16 +5,24 @@ using UnityEngine;
 public class CameraManager : MonoBehaviour
 {
     [SerializeField] private Transform target;
+    public Camera camera;
     //[SerializeField] private Rigidbody2D slowCamera;
     private float offsetX;
     private float offsetY;
-    private Vector3 maxVector;
-    private Vector3 direction;
-    private bool isEndLine = false; 
+    [SerializeField] private Vector2 minBounds;
+    [SerializeField] private Vector2 maxBounds;
 
     // Start is called before the first frame update
+
     void Start()
     {
+        minBounds.x += camera.orthographicSize * Screen.width / Screen.height; //카메라의 크기만큼의 최소값을 정해준다.
+		maxBounds.x += -(camera.orthographicSize * Screen.width / Screen.height) +1; //카메라의 크기만큼의 최대값을 정해준다.
+
+		minBounds.y += camera.orthographicSize; //카메라의 크기만큼의 최소값을 정해준다.
+		maxBounds.y += -(camera.orthographicSize) +1 ; //카메라의 크기만큼의 최대값을 정해준다.
+		transform.position = new Vector3(target.position.x, target.position.y, transform.position.z);
+
         if (target == null)
             return;
 
@@ -23,33 +31,33 @@ public class CameraManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         if (target == null)
             return;
-
-        if (isEndLine == true)
-        {
-            return;
-		}
 
         Vector3 pos = transform.position;
 
 		pos.x = target.position.x + offsetX; //대상 위치 + 본인 위치
         pos.y = target.position.y + offsetY;
-        transform.position = pos;
-        //Vector2 direction = (target.position - transform.position);
-        //slowCamera.velocity = Vector3.Lerp(direction, target.position, Time.deltaTime * 2f); //부드럽게 이동
-        //slowCamera.velocity = direction * 1.5f;
-        //slowCamera.velocity = Vector3.Lerp(pos, gameObject.transform.position, Time.deltaTime * 2f); 
-    }
+
+        pos.x = Mathf.Clamp(pos.x, minBounds.x, maxBounds.x); //최소값과 최대값을 정해준다.
+        pos.y = Mathf.Clamp(pos.y, minBounds.y, maxBounds.y);   
+
+		transform.position = Vector3.Lerp(transform.position, pos, Time.deltaTime * 2f); 
+        //부드럽게 이동
+		//Vector2 direction = (target.position - transform.position);
+		//slowCamera.velocity = Vector3.Lerp(direction, target.position, Time.deltaTime * 2f); //부드럽게 이동
+		//slowCamera.velocity = direction * 1.5f;
+		//slowCamera.velocity = Vector3.Lerp(pos, gameObject.transform.position, Time.deltaTime * 2f); 
+	}
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("wall"))
         {
             
-            isEndLine = true;
+            //isEndLine = true;
             //slowCamera.velocity = transform.position - transform.position;
             return;
         }
