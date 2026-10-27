@@ -37,10 +37,10 @@ public class PlayerMove : MonoBehaviour
 		{
 			selectItem = item;
 
-			foreach (var prefab in itemPrefab)
-			{
-				prefab.SetActive(false);
-			}
+			//foreach (var prefab in itemPrefab)
+			//{
+			//	prefab.SetActive(false);
+			//}
 
 			foreach (var prefab in itemPrefab)
 			{
@@ -53,7 +53,7 @@ public class PlayerMove : MonoBehaviour
 			}
 			var newItem = Instantiate(item, transform.position + new Vector3(rot.x * 0.8f, 0), quaternion.identity, transform);
 			newItem.name = item.name;
-			itemPrefab.Add(newItem);
+			//itemPrefab.Add(newItem);
 			itemAnimator = itemPrefab[itemPrefab.Count - 1].GetComponent<Animator>();
 		}
 	}
